@@ -1,0 +1,20 @@
+/* sort */
+.sort {
+    color: #212529;
+}
+
+.sort i {
+    font-size: 15px
+}
+
+.sort i.fa-sort-down, .sort i.fa-sort-up {
+    display: none;
+}
+
+.sort i.fa-sort-down {
+    vertical-align: top;
+}
+
+.sort i.fa-sort-up {
+    vertical-align: bottom;
+}

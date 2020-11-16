@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.js"></script>
+
+  <script type="text/x-mathjax-config">
+    // make sure that equations numbers are enabled
+    MathJax.Hub.Config({ TeX: { equationNumbers: {
+        autoNumber: "AMS", // All AMS equations are numbered
+        useLabelIds: true, // labels as ids
+        // format the equation number - uses an offset eqNumInitial (default 0)
+        formatNumber: function (n) {return String(Number(n)+Number(1)-1)}
+        } }
+    });
+    </script>
+    {% include 'head.html' %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+
+    $( document ).ready(function(){
+
+            var cfg = {};
+
+            // fire the main function with these parameters
+            require(['nbextensions/toc2/toc2', "jquery", "jquery-ui"], function (toc2, $) {
+                toc2.table_of_contents(cfg);
+                $("#toc-wrapper").css("top", 0);
+            });
+
+            require(["bootstrap", "jquery"], function (b, $) {});
+
+             //Value of configuration variables, some taken from the notebook's metada.
+            eqNum = 0; // begins equation numbering at eqNum+1
+            eqLabelWithNumbers = "True"=="True" ? true : false; //if true, label equations with equation numbers;
+                                           //otherwise using the tag specified by \label
+            conversion_to_html = false;
+            current_cit=1;
+            cite_by='key';  //only number and key are supported
+            //var document={}
+            document.bibliography={};
+
+            // Read environment map config
+            initmap();
+            // Read user envs config, if specified
+
+            environmentMap = $.extend(true,{}, environmentInitialMap)
+
+            // fire the main function with these parameters
+            var html_to_analyse = $('body').html()
+            var html_converted = thmsInNbConv(marked,html_to_analyse);
+            html_converted = html_converted.replace(/%[\S\t ]*<\/p>/gm,"</p>")
+            $('body').html(html_converted)
+            // Show/hide anchors
+            var labels_anchors = "True"=="True" ? true : false;
+            $('.latex_label_anchor').toggle(labels_anchors)
+            // Number all environments
+            report_style_numbering = "True"=="True" ? true : false;
+            reset_counters();
+            renumberAllEnvs();
+
+    });
+
+    </script>
+    <!-- End of mathjax configuration -->
+
+    <script type="text/javascript">
+        require(["nbextensions/toc2/toc2", "bootstrap", "jquery", "jquery-ui"], function (toc2, b, $) {
+            var cfg = {};
+            toc2.table_of_contents(cfg);
+            $("#toc-wrapper").css("top", 0);
+        });
+    </script>
+
+    <style>
+        #toc-wrapper {
+            position: absolute !important;
+            max-height: 700px;
+        }
+
+        input[type='checkbox'] {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'nav.html' %}
+    <div>
+        <div style="text-align: right;margin-right: 20px;margin-bottom: 10px">
+            <a href="{{ root }}/{{ id }}/download/{{ prefix }}" class="btn btn-outline-primary">Download</a>
+        </div>
+        <div id="content" style="position: relative;margin-right: 20px">
+            <div tabindex="-1" id="notebook" class="border-box-sizing">
+                <div class="container" id="notebook-container" style="margin-left: 353px;">
+                    {{ body|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

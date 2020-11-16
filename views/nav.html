@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="masthead">
+    <a class="navbar-brand" href="javascript:void(0)" style="font-size: 28px;color: #666;font-weight: bold;padding: 0">jnotebook-reader</a>
+    <div class="navbar-collapse collapse">
+        <div class="navbar-nav mr-auto"></div>
+        {% if body %}
+        <span class="navbar-text">
+            <div class="dropdown" style="float: right;padding-left:18px">
+                <a href="javascript:void(0)" data-toggle="dropdown">
+                    Settings
+                    <i class="fa fa-angle-down"
+                        style="margin-left: 4px;font-size: 18px;vertical-align: middle;font-weight: 600;"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="javascript:void(0)" hide-code>Hide Code</a>
+                    <a class="dropdown-item" href="javascript:void(0)" show-code style="display: none;">Show Code</a>
+                </div>
+            </div>
+        </span>
+        {% endif %}
+    </div>
+</nav>
+<script>
+    $("[hide-code]").on("click", function () {
+        $("div.input").hide();
+        $("[hide-code]").hide();
+        $("[show-code]").show();
+    });
+    $("[show-code]").on("click", function () {
+        $("div.input").show();
+        $("[show-code]").hide();
+        $("[hide-code]").show();
+    });
+</script>
+<nav id="breadcrumb" class="mb-5" style="margin-left: 40px;">
+    <ol class="breadcrumb" style="background-color: #fff">
+        {% if prefix|length == 0 %}
+        <li class="breadcrumb-item active">Home</li>
+        {% else %}
+        {% set items = prefix.split("/") %}
+        <li class="breadcrumb-item">
+            <a href="{{ root }}/{{ id }}">Home</a>
+        </li>
+        {% for item in items %}
+        {% if loop.index - 1 < items|length - 1 %}
+        <li class="breadcrumb-item">
+            <a href="{{ root }}/{{ id }}/{{ items[0:loop.index]|join('/') }}/">{{ item }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        <li class="breadcrumb-item active">{{ items[items|length - 1] }}</li>
+        {% endif %}
+    </ol>
+</nav>

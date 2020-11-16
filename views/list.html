@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    {% include 'head.html' %}
+    <script>
+        require(["bootstrap", "jquery", "jquery.utility", "jquery.sort"], function (b, $) {
+            $("table").sortable();
+
+            var location = window.location;
+            var port = "";
+            if (location.protocol.startsWith("https")) {
+                if (location.port != 443) {
+                    port = ":" + location.port;
+                }
+            } else if (location.protocol.startsWith("http")) {
+                if (location.port != 80) {
+                    port = ":" + location.port;
+                }
+            }
+            $.each($("p[link]"), function (i, value) {
+                $(value).text(location.protocol + "//" + location.hostname + port + $(value).text());
+            });
+
+            $("button[copy]").on("click", function () {
+                $.copyToClipboard($(this).closest("div[role='dialog']").find("p[link]").text());
+            });
+        });
+    </script>
+</head>
+
+<body>
+    {% include 'nav.html' %}
+    <div style="margin: 0 40px;">
+        <table class="table table-hover">
+            <thead>
+                <th style="width:50px;"></th>
+                <th sortable>Name</th>
+                <th sortable>Size</th>
+                <th sortable>Type</th>
+                <th sortable>Last Modified</th>
+                <th></th>
+            </thead>
+            <tbody>
+                {% for content in contents %}
+                <tr>
+                    <td>
+                        {% if content["type"] == "Folder" %}
+                            <i class="fas fa-folder" style="color: #999;"></i>
+                        {% elif content["name"].lower().endswith(".ipynb") %}
+                            <i class="fas fa-book-open" style="color: #999;"></i>
+                        {% elif content["name"].lower().endswith(".jpg") or content["name"].lower().endswith(".jpeg")
+                            or content["name"].lower().endswith(".png") or content["name"].lower().endswith(".gif") %}
+                            <i class="fas fa-image" style="color: #999;"></i>
+                        {% else %}
+                            <i class="fas fa-file" style="color: #999;"></i>
+                        {% endif %}
+                    </td>
+                    <td sort-by='{{ content["name"] }}'><a href="{{ root }}/{{ id }}/{{ path }}{{ content['name'] }}{% if content['type'] == 'Folder' %}/{% endif %}">{{ content["name"] }}</a></td>
+                    <td sort-by='{{ content["rawSize"] }}'>{{ content["size"] }}</td>
+                    <td sort-by='{{ content["type"] }}'>{{ content["type"] }}</td>
+                    <td sort-by='{{ content["lastModified"] }}'>{{ content["lastModified"] }}</td>
+                    <td>
+                        {% if content["type"] == 'File' %}
+                        <a href="{{ root }}/{{ id }}/download/{{ path }}{{ content['name'] }}"><i class="fas fa-download"></i></a>&nbsp;
+                        <a title="view link" href="javascript:void(0)" view data-target="#view-{{ loop.index }}" data-toggle="modal">
+                            <i class="fas fa-link"></i>
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+{% for content in contents %}
+{% if content["type"] == 'File' %}
+<div class="modal fade" role="dialog" tabindex="-1" id="view-{{ loop.index }}" style="display:none">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>File URL</h3>
+            </div>
+            <div class="modal-body">
+                <p link>{{ root }}/{{ id }}/download/{{ path }}{{ content['name'] }}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-info" type="button" copy>Copy to clipboard</button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+
+</html>

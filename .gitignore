@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+.venv
+.env
+.autoenv
+
+# segment file
+*.dat
+*.log
+*.pid
+celerybeat-schedule
+logs/*
+run/*
+data/**
+
+*.idea
+*.iml
+package-lock.json

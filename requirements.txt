@@ -1,0 +1,8 @@
+Flask==1.1.2
+jupyter_latex_envs==1.4.6
+tzlocal==2.1
+Flask_API==2.0
+markdown2==2.3.10
+boto3==1.16.6
+nbformat==5.0.8
+botocore==1.19.6

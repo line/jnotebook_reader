@@ -1,0 +1,30 @@
+<meta charset="utf-8" />
+<title>jnotebook-reader</title>
+
+<link rel="shortcut icon" type="image/png" href="{{ root }}/static/res/favicon.png"/>
+<link href="{{ root }}/static/css/bootstrap-4.3.1.css" rel="stylesheet">
+<link href="{{ root }}/static/css/notebook-style.css" rel="stylesheet">
+<link href="{{ root }}/static/css/jquery-ui.css" rel="stylesheet">
+<link href="{{ root }}/static/css/toc2.css" rel="stylesheet">
+<link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">
+<link href="{{ root }}/static/css/customer.css" rel="stylesheet">
+
+<script src="{{ root }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ root }}/static/js/require.js"></script>
+<script>
+    require.config({
+        paths: {
+            "jquery": "{{ root }}/static/js/jquery-3.3.1",
+            "jquery-ui": "{{ root }}/static/js/jquery-ui",
+            "jquery.utility": "{{ root }}/static/js/jquery.utility",
+            "jquery.sort": "{{ root }}/static/js/jquery.sort",
+            "bootstrap": "{{ root }}/static/js/bootstrap.bundle-4.3.1",
+            "nbextensions/toc2/toc2": "{{ root }}/static/js/toc2"
+        },
+        shim: {
+            "jquery-ui": ["jquery"],
+            "jquery.utility": ["jquery"],
+            "jquery.sort": ["jquery"]
+        }
+    });
+</script>
