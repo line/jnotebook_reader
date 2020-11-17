@@ -149,6 +149,12 @@ pip install -r requirements.txt
 waitress-serve --call --listen=:9088 'app:create_app' &
 ```
 
+## :peace_symbol: Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contributing to jnotebook-reader.
+
+If you believe you have discovered a vulnerability or have an issue related to security, please DO NOT open a public issue. Instead, send us a mail to [dl_oss_dev@linecorp.com](mailto:dl_oss_dev@linecorp.com).
+
 ## :libra: License
 
 ```
