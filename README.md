@@ -107,7 +107,24 @@ http://localhost:9088/b
 ```
 You can access it like: <br/>
 http://localhost:9088/ANY
-## :leo: Access
+### How to configure with environment variables
+You can set configuration through environment variables.
+if environment variables set, the configuration file will be overwritten accordingly.
+```bash
+# Storage type, local or s3, default is local
+JNOTEBOOK_READER_STORAGE_TYPE = "local"
+# s3 endpoint, only for s3 storage type
+JNOTEBOOK_READER_S3_ENDPOINT = ""
+# s3 access key, only for s3 storage type
+JNOTEBOOK_READER_S3_ACCESS_KEY = ""
+# s3 secret key, only for s3 storage type
+JNOTEBOOK_READER_S3_SECRET_KEY = ""
+# s3 bucket name, could set multiple, separated by ',' only for s3 storage type
+JNOTEBOOK_READER_S3_BUCKET_NAME = ""
+# local directories, could set multiple, separated by ',' only for local storage type
+JNOTEBOOK_READER_DIR = ""
+```
+## :leo: API Spec
 ### Method
 GET http://localhost:9088/:id/(:prefix|:key|:path)
 ### Path Variable
