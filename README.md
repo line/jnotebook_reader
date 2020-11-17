@@ -148,6 +148,17 @@ cd jnotebook-reader
 pip install -r requirements.txt
 waitress-serve --call --listen=:9088 'app:create_app' &
 ```
+## :virgo: Docker
+```bash
+docker build -t jnotebook_reader .
+docker run -p 9088:9088 \
+    -e JNOTEBOOK_READER_STORAGE_TYPE="s3" \
+    -e JNOTEBOOK_READER_S3_ENDPOINT="https://line-objects-dev.com" \
+    -e JNOTEBOOK_READER_S3_ACCESS_KEY="61eca0ff1ae446ed98e912c81d0e5248" \
+    -e JNOTEBOOK_READER_S3_SECRET_KEY="34608dd72b5a40e58e3ba0e3393ad9fe" \
+    -e JNOTEBOOK_READER_S3_BUCKET_NAME="commuter-cl10104,commuter-test" \
+    -it --rm jnotebook_reader
+```
 
 ## :peace_symbol: Contributing
 

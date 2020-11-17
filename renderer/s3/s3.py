@@ -23,6 +23,7 @@ from datetime import datetime
 from lib.logger import logger
 from lib.utils import format_date, format_size
 from common.const import const
+import os
 
 log = logger(__name__)
 
@@ -38,13 +39,28 @@ class S3Renderer(Renderer):
             return buckets
 
     def __connect(self, id):
+        endpoint = request.headers.get("Endpoit")
         access_key = request.headers.get("Access-Key")
         secret_key = request.headers.get("Secret-Key")
         bucket = request.headers.get("Bucket-Name")
 
-        if not access_key or not secret_key or not bucket:
+        if not endpoint:
+            endpoint = os.environ.get("JNOTEBOOK_READER_S3_ENDPOINT")
+        if not endpoint:
+            endpoint = config["storage"]["s3"]["endpoint"]
+        if not access_key:
+            access_key = os.environ.get("JNOTEBOOK_READER_S3_ACCESS_KEY")
+        if not access_key:
             access_key = config["storage"]["s3"]["accessKey"]
+        if not secret_key:
+            secret_key = os.environ.get("JNOTEBOOK_READER_S3_SECRET_KEY")
+        if not secret_key:
             secret_key = config["storage"]["s3"]["secretKey"]
+        if not bucket:
+            bucket = os.environ.get("JNOTEBOOK_READER_S3_BUCKET_NAME")
+            if bucket:
+                bucket = bucket.split(",")[int(id)]
+        if not bucket:
             bucket = self.__bucket(id)
 
         session = boto3.session.Session()
@@ -52,7 +68,7 @@ class S3Renderer(Renderer):
             service_name="s3",
             aws_access_key_id=access_key,
             aws_secret_access_key=secret_key,
-            endpoint_url=config["storage"]["s3"]["endpoint"],
+            endpoint_url=endpoint,
         )
         return client, bucket
 
