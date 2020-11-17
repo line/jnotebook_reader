@@ -22,7 +22,7 @@ config = {
         },
         "storage": {
             "type": "local",                     # local or s3
-            "directories": ["/Users/linechina/Downloads/folder1"],             # If type is local effective
+            "directories": ["docs"],             # If type is local effective
             "s3": {                              # s3 config, if type is s3 effective
                 "endpoint": None,                # s3 endpoint, if type is s3 required, if set with None would access to s3 global url
                 "accessKey": "YOUR_ACCESS_KEY",  # optional, default; request header "Access-Key" could replace it
