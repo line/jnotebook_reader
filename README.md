@@ -165,7 +165,7 @@ cd jnotebook-reader
 pip install -r requirements.txt
 waitress-serve --call --listen=:9088 'app:create_app' &
 ```
-## :cancer: Docker
+## :aquarius: Docker
 ```bash
 docker build -t jnotebook_reader .
 docker run -p 9088:9088 \
