@@ -39,28 +39,31 @@ class S3Renderer(Renderer):
             return buckets
 
     def __connect(self, id):
-        endpoint = request.headers.get("Endpoit")
+        endpoint = request.headers.get("Endpoint")
         access_key = request.headers.get("Access-Key")
         secret_key = request.headers.get("Secret-Key")
         bucket = request.headers.get("Bucket-Name")
 
         if not endpoint:
             endpoint = os.environ.get("JNOTEBOOK_READER_S3_ENDPOINT")
-        if not endpoint:
+        else:
             endpoint = config["storage"]["s3"]["endpoint"]
+
         if not access_key:
             access_key = os.environ.get("AWS_ACCESS_KEY_ID")
-        if not access_key:
+        else:
             access_key = config["storage"]["s3"]["accessKey"]
+
         if not secret_key:
             secret_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
-        if not secret_key:
+        else:
             secret_key = config["storage"]["s3"]["secretKey"]
+
         if not bucket:
             bucket = os.environ.get("JNOTEBOOK_READER_S3_BUCKET_NAME")
             if bucket:
                 bucket = bucket.split(",")[int(id)]
-        if not bucket:
+        else:
             bucket = self.__bucket(id)
 
         session = boto3.session.Session()

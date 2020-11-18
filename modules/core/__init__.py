@@ -19,7 +19,7 @@ import os
 
 judy_api = Blueprint("judy_api", __name__)
 
-type = os.environ.get("JNOTEBOOK_READER_STORAGE_TYPE")
+type = os.environ.get("JNOTEBOOK_READER_STORAGE_TYPE", "local").lower()
 if type != "local" and type != "s3":
     type = config["storage"]["type"]
 if type != "local" and type != "s3":
