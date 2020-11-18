@@ -49,11 +49,11 @@ class S3Renderer(Renderer):
         if not endpoint:
             endpoint = config["storage"]["s3"]["endpoint"]
         if not access_key:
-            access_key = os.environ.get("JNOTEBOOK_READER_S3_ACCESS_KEY")
+            access_key = os.environ.get("AWS_ACCESS_KEY_ID")
         if not access_key:
             access_key = config["storage"]["s3"]["accessKey"]
         if not secret_key:
-            secret_key = os.environ.get("JNOTEBOOK_READER_S3_SECRET_KEY")
+            secret_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
         if not secret_key:
             secret_key = config["storage"]["s3"]["secretKey"]
         if not bucket:

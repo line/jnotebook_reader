@@ -116,9 +116,9 @@ JNOTEBOOK_READER_STORAGE_TYPE = "local"
 # s3 endpoint, only for s3 storage type
 JNOTEBOOK_READER_S3_ENDPOINT = ""
 # s3 access key, only for s3 storage type
-JNOTEBOOK_READER_S3_ACCESS_KEY = ""
+AWS_ACCESS_KEY_ID = ""
 # s3 secret key, only for s3 storage type
-JNOTEBOOK_READER_S3_SECRET_KEY = ""
+AWS_SECRET_ACCESS_KEY = ""
 # s3 bucket name, could set multiple, separated by ',' only for s3 storage type
 JNOTEBOOK_READER_S3_BUCKET_NAME = ""
 # local directories, could set multiple, separated by ',' only for local storage type
@@ -171,8 +171,8 @@ docker build -t jnotebook_reader .
 docker run -p 9088:9088 \
     -e JNOTEBOOK_READER_STORAGE_TYPE="s3" \
     -e JNOTEBOOK_READER_S3_ENDPOINT="S3_ENDPOINT" \
-    -e JNOTEBOOK_READER_S3_ACCESS_KEY="S3_ACCESS_KEY" \
-    -e JNOTEBOOK_READER_S3_SECRET_KEY="S3_SECRET_KEY" \
+    -e AWS_ACCESS_KEY_ID="S3_ACCESS_KEY" \
+    -e AWS_SECRET_ACCESS_KEY="S3_SECRET_KEY" \
     -e JNOTEBOOK_READER_S3_BUCKET_NAME="S3_BUCKET_NAME_1,S3_BUCKET_NAME_2" \
     -it --rm jnotebook_reader
 ```
