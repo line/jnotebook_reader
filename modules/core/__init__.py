@@ -22,4 +22,5 @@ judy_api = Blueprint("judy_api", __name__)
 type = (os.environ.get("JNOTEBOOK_READER_STORAGE_TYPE") or config["storage"]["type"]).lower()
 if type not in ("local", "s3"):
     type = "local"
+
 renderer = importlib.import_module("renderer.{}".format(type)).renderer
