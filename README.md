@@ -177,6 +177,27 @@ docker run -p 9088:9088 \
     -it --rm jnotebook_reader
 ```
 
+## :pisces: Kubernetes
+```bash
+# Rollout jnotebook_reader deployment on Kubernetes cluster ( all resources are created in jnotebook-reader namespace )
+kubectl apply -f deployment.yml
+
+# Get jnotebook_reader port
+The examples deploy a NodePort service, so you have to check for the port it is mapped to:
+
+kubectl get svc -n jnotebook-reader
+
+Use the second port you find in the output to access jnotebook_reader, for instance:
+
+NAME                   TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+jnotebook-reader-svc   NodePort   172.19.66.29   <none>        9088:30693/TCP   25s
+
+Type in browser -> http://{kubernetes_cluster_ip}:30693
+
+# Destroy all resources
+kubectl delete ns jnotebook-reader
+```
+
 ## :peace_symbol: Contributing
 
 Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contributing to jnotebook-reader.
