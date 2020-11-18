@@ -23,6 +23,7 @@ from datetime import datetime
 from lib.logger import logger
 from lib.utils import format_date, format_size
 from common.const import const
+import os
 
 log = logger(__name__)
 
@@ -38,21 +39,25 @@ class S3Renderer(Renderer):
             return buckets
 
     def __connect(self, id):
-        access_key = request.headers.get("Access-Key")
-        secret_key = request.headers.get("Secret-Key")
-        bucket = request.headers.get("Bucket-Name")
-
-        if not access_key or not secret_key or not bucket:
-            access_key = config["storage"]["s3"]["accessKey"]
-            secret_key = config["storage"]["s3"]["secretKey"]
-            bucket = self.__bucket(id)
+        endpoint = request.headers.get("Endpoint") \
+                   or os.environ.get("JNOTEBOOK_READER_S3_ENDPOINT") \
+                   or config["storage"]["s3"]["endpoint"]
+        access_key = request.headers.get("Access-Key") \
+                     or os.environ.get("AWS_ACCESS_KEY_ID") \
+                     or config["storage"]["s3"]["accessKey"]
+        secret_key = request.headers.get("Secret-Key") \
+                     or os.environ.get("AWS_SECRET_ACCESS_KEY") \
+                     or config["storage"]["s3"]["secretKey"]
+        bucket = request.headers.get("Bucket-Name") \
+                 or os.environ.get("JNOTEBOOK_READER_S3_BUCKET_NAME", "").split(",")[int(id)] \
+                 or self.__bucket(id)
 
         session = boto3.session.Session()
         client = session.client(
             service_name="s3",
             aws_access_key_id=access_key,
             aws_secret_access_key=secret_key,
-            endpoint_url=config["storage"]["s3"]["endpoint"],
+            endpoint_url=endpoint,
         )
         return client, bucket
 
@@ -78,7 +83,7 @@ class S3Renderer(Renderer):
         if contents:
             for content in contents:
                 if content["Key"] != prefix:
-                    name = content["Key"][len(prefix) :]
+                    name = content["Key"][len(prefix):]
                     if not name.startswith("."):
                         result.append(
                             {
@@ -93,8 +98,8 @@ class S3Renderer(Renderer):
         if common_prefixes:
             for common_prefix in common_prefixes:
                 name = common_prefix["Prefix"][
-                    len(prefix) : len(common_prefix["Prefix"]) - 1
-                ]
+                       len(prefix): len(common_prefix["Prefix"]) - 1
+                       ]
                 result.append(
                     {
                         "name": name,
