@@ -107,7 +107,24 @@ http://localhost:9088/b
 ```
 You can access it like: <br/>
 http://localhost:9088/ANY
-## :leo: Access
+### How to configure with environment variables
+You can set configuration through environment variables.
+if environment variables set, the configuration file will be overwritten accordingly.
+```bash
+# Storage type, local or s3, default is local
+JNOTEBOOK_READER_STORAGE_TYPE = "local"
+# s3 endpoint, only for s3 storage type
+JNOTEBOOK_READER_S3_ENDPOINT = ""
+# s3 access key, only for s3 storage type
+AWS_ACCESS_KEY_ID = ""
+# s3 secret key, only for s3 storage type
+AWS_SECRET_ACCESS_KEY = ""
+# s3 bucket name, could set multiple, separated by ',' only for s3 storage type
+JNOTEBOOK_READER_S3_BUCKET_NAME = ""
+# local directories, could set multiple, separated by ',' only for local storage type
+JNOTEBOOK_READER_DIR = ""
+```
+## :leo: API Spec
 ### Method
 GET http://localhost:9088/:id/(:prefix|:key|:path)
 ### Path Variable
@@ -147,6 +164,17 @@ git clone https://github.com/line/jnotebook-reader
 cd jnotebook-reader
 pip install -r requirements.txt
 waitress-serve --call --listen=:9088 'app:create_app' &
+```
+## :aquarius: Docker
+```bash
+docker build -t jnotebook_reader .
+docker run -p 9088:9088 \
+    -e JNOTEBOOK_READER_STORAGE_TYPE="s3" \
+    -e JNOTEBOOK_READER_S3_ENDPOINT="S3_ENDPOINT" \
+    -e AWS_ACCESS_KEY_ID="S3_ACCESS_KEY" \
+    -e AWS_SECRET_ACCESS_KEY="S3_SECRET_KEY" \
+    -e JNOTEBOOK_READER_S3_BUCKET_NAME="S3_BUCKET_NAME_1,S3_BUCKET_NAME_2" \
+    -it --rm jnotebook_reader
 ```
 
 ## :peace_symbol: Contributing

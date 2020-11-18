@@ -23,6 +23,7 @@ from lib.config import config
 from lib.utils import format_date, format_size
 from flask import request
 from flask_api import status
+import os
 
 
 class LocalRenderer(Renderer):
@@ -50,7 +51,11 @@ class LocalRenderer(Renderer):
             return directories
 
     def __base(self, id):
-        return self.__directory(id)
+        dir = os.environ.get("JNOTEBOOK_READER_DIR")
+        if not dir:
+            return self.__directory(id)
+        else:
+            return dir.split(",")[int(id)]
 
     def __list(self, path):
         result = []
