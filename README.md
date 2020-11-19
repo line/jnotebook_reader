@@ -169,6 +169,7 @@ waitress-serve --call --listen=:9088 'app:create_app' &
 ```bash
 docker build -t jnotebook_reader .
 docker run -p 9088:9088 \
+    -e JNOTEBOOK_READER_SERVER_PORT="9088" \
     -e JNOTEBOOK_READER_STORAGE_TYPE="s3" \
     -e JNOTEBOOK_READER_S3_ENDPOINT="S3_ENDPOINT" \
     -e AWS_ACCESS_KEY_ID="S3_ACCESS_KEY" \
