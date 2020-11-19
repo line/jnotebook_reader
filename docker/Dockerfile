@@ -6,6 +6,6 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-RUN chmod +x ./docker-entrypoint.sh
+RUN chmod +x ./docker/docker-entrypoint.sh
 
-CMD ["./docker-entrypoint.sh"]
+CMD ["./docker/docker-entrypoint.sh"]
