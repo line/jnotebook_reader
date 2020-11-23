@@ -16,6 +16,7 @@ from lib.config import config
 from flask import Flask
 from modules.core import api, judy_api
 from modules.monitor import l7check, l7check_api
+import os
 
 
 def create_app():
@@ -30,4 +31,4 @@ def create_app():
 
 app = create_app()
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=config["server"]["port"])
+    app.run(host="0.0.0.0", port=os.environ.get("JNOTEBOOK_READER_SERVER_PORT") or config["server"]["port"])

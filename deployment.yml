@@ -33,6 +33,8 @@ spec:
               memory: 256Mi
               cpu: "0.5"
           env:
+            - name: JNOTEBOOK_READER_SERVER_PORT
+              value: "9088"
             - name: JNOTEBOOK_READER_STORAGE_TYPE
               value: "{s3}"
             - name: JNOTEBOOK_READER_S3_ENDPOINT
