@@ -159,6 +159,7 @@ curl -X GET http://localhost:9088/0/folder/test.ipynb
 curl -X GET http://localhost:9088/1/folder/test.ipynb
 ```
 ## :virgo: Production
+If you want to release jnotebook_reader as a production service, it is recommended that you install [waitress-serve](https://docs.pylonsproject.org/projects/waitress/en/stable/runner.html) to manage your service.
 ```bash
 git clone https://github.com/line/jnotebook-reader
 cd jnotebook-reader
