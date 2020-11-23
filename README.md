@@ -167,7 +167,7 @@ waitress-serve --call --listen=:9088 'app:create_app' &
 ```
 ## :aquarius: Docker
 ```bash
-docker build -t jnotebook_reader .
+docker build -t jnotebook_reader -f docker/Dockerfile .
 docker run -p 9088:9088 \
     -e JNOTEBOOK_READER_SERVER_PORT="9088" \
     -e JNOTEBOOK_READER_STORAGE_TYPE="s3" \
@@ -181,7 +181,7 @@ docker run -p 9088:9088 \
 ## :pisces: Kubernetes
 ```bash
 # Rollout jnotebook_reader deployment on Kubernetes cluster ( all resources are created in jnotebook-reader namespace )
-kubectl apply -f deployment.yml
+kubectl apply -f docker/deployment.yml
 
 # Get jnotebook_reader port
 The examples deploy a NodePort service, so you have to check for the port it is mapped to:
