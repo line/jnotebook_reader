@@ -4,7 +4,7 @@
 <head>
     {% include 'head.html' %}
     <script>
-        require(["bootstrap", "jquery", "jquery.utility", "jquery.sort"], function (b, $) {
+        require(["bootstrap", "clipboard", "jquery", "jquery.sort"], function (b, Clipboard, $) {
             $("table").sortable();
 
             var location = window.location;
@@ -22,8 +22,11 @@
                 $(value).text(location.protocol + "//" + location.hostname + port + $(value).text());
             });
 
-            $("button[copy]").on("click", function () {
-                $.copyToClipboard($(this).closest("div[role='dialog']").find("p[link]").text());
+            new Clipboard("button[copy]", {
+                container: $(".modal"),
+                target: function (trigger) {
+                    return $(trigger).closest(".modal").find("p[link]").get(0);
+                }
             });
         });
     </script>
@@ -84,7 +87,7 @@
                 <h3>File URL</h3>
             </div>
             <div class="modal-body">
-                <p link>{{ root }}/{{ id }}/download/{{ path }}{{ content['name'] }}</p>
+                <p link>{{ root }}/{{ id }}/{{ path }}{{ content['name'] }}</p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-info" type="button" copy>Copy to clipboard</button>
