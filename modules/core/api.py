@@ -26,6 +26,7 @@ from flask_api import status
 from lib.config import config
 from lib.logger import logger
 import base64
+from urllib.parse import quote
 
 log = logger(__name__)
 
@@ -125,12 +126,11 @@ def download(id, prefix):
                     file_info["status"],
                 )
         parts = prefix.split("/")
+        file_name = quote(parts[len(parts) - 1])
         return Response(
             stream_with_context(file_info["stream"]),
             headers={
-                const.CONTENT_DISPOSITION_HEADER: "{}={}".format(
-                    const.ATTACHMENT_HEADER, parts[len(parts) - 1]
-                )
+                const.CONTENT_DISPOSITION_HEADER: const.ATTACHMENT_HEADER.format(file_name)
             },
         )
     except Exception as e:
