@@ -78,37 +78,46 @@ class S3Renderer(Renderer):
 
     def __list(self, s3_client, bucket, prefix):
         result = []
-        data = s3_client.list_objects(Bucket=bucket, Delimiter="/", Prefix=prefix)
-        contents = data.get("Contents")
-        if contents:
-            for content in contents:
-                if content["Key"] != prefix:
-                    name = content["Key"][len(prefix):]
-                    if not name.startswith("."):
-                        result.append(
-                            {
-                                "name": name,
-                                "size": format_size(content["Size"]),
-                                "rawSize": content["Size"],
-                                "lastModified": format_date(content["LastModified"]),
-                                "type": "File",
-                            }
-                        )
-        common_prefixes = data.get("CommonPrefixes")
-        if common_prefixes:
-            for common_prefix in common_prefixes:
-                name = common_prefix["Prefix"][
-                       len(prefix): len(common_prefix["Prefix"]) - 1
-                       ]
-                result.append(
-                    {
-                        "name": name,
-                        "size": 0,
-                        "rawSize": 0,
-                        "lastModified": "-",
-                        "type": "Folder",
-                    }
-                )
+        paginator = s3_client.get_paginator("list_objects")
+        page_iterator = paginator.paginate(
+            Bucket=bucket,
+            Delimiter="/",
+            Prefix=prefix,
+            PaginationConfig={
+                "PageSize": 1000
+            }
+        )
+        for data in page_iterator:
+            contents = data.get("Contents")
+            if contents:
+                for content in contents:
+                    if content["Key"] != prefix:
+                        name = content["Key"][len(prefix):]
+                        if not name.startswith("."):
+                            result.append(
+                                {
+                                    "name": name,
+                                    "size": format_size(content["Size"]),
+                                    "rawSize": content["Size"],
+                                    "lastModified": format_date(content["LastModified"]),
+                                    "type": "File",
+                                }
+                            )
+            common_prefixes = data.get("CommonPrefixes")
+            if common_prefixes:
+                for common_prefix in common_prefixes:
+                    name = common_prefix["Prefix"][
+                           len(prefix): len(common_prefix["Prefix"]) - 1
+                           ]
+                    result.append(
+                        {
+                            "name": name,
+                            "size": 0,
+                            "rawSize": 0,
+                            "lastModified": "-",
+                            "type": "Folder",
+                        }
+                    )
         return result
 
     def render_directory(self, id, prefix):
