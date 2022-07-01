@@ -1,4 +1,4 @@
-# :black_joker: jnotebook-reader
+# :black_joker: jnotebook_reader
 - Browse and render Jupyter Notebooks from local, Amazon S3, Google Cloud Storage or MinIO
 - Register and access multiple directories(or buckets) at the same time
 - Show and allow to config ToC(Table of Contents) included in your Jupyter Notebook
