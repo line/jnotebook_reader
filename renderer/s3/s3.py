@@ -39,6 +39,12 @@ class S3Renderer(Renderer):
             return buckets
 
     def __connect(self, id):
+        if os.environ.get("JNOTEBOOK_READER_S3_BUCKET_NAME") and isinstance(id, int):
+            # line below was blowing up when specifying buckets as a dict in lib/config.py
+            env_bucket = os.environ.get("JNOTEBOOK_READER_S3_BUCKET_NAME", "").split(",")[int(id)]
+        else:
+            env_bucket = None
+
         endpoint = request.headers.get("Endpoint") \
                    or os.environ.get("JNOTEBOOK_READER_S3_ENDPOINT") \
                    or config["storage"]["s3"]["endpoint"]
@@ -49,7 +55,7 @@ class S3Renderer(Renderer):
                      or os.environ.get("AWS_SECRET_ACCESS_KEY") \
                      or config["storage"]["s3"]["secretKey"]
         bucket = request.headers.get("Bucket-Name") \
-                 or os.environ.get("JNOTEBOOK_READER_S3_BUCKET_NAME", "").split(",")[int(id)] \
+                 or env_bucket \
                  or self.__bucket(id)
 
         session = boto3.session.Session()
